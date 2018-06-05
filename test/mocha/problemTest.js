@@ -2,7 +2,7 @@ const chai = require('chai');
 const chaiHttp = require('chai-http');
 const expect = chai.expect;
 const fixtures = require('./fixtures.js');
-const userCredentials = 'loginSessionUser=steve; EncAuth=ff6d8301-dd2f-4a83-9e3e-1ff4a459a292'; // this is always changing
+const userCredentials = fixtures.session;
 const baseUrl = "/api/problems/";
 const problemId = '5b0d939baca0b80f78807cf5';
 

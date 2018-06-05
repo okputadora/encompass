@@ -4,6 +4,10 @@
 **/
 
 module.exports = {
+  // If you are getting 401 errors with these tests you may need to change
+  // the userCredentials variable. Go to the network tab of the dev tools in your
+  // browser and find the value of Cookie. Paste it in here
+  session: 'loginSessionUser=steve; EncAuth=ff6d8301-dd2f-4a83-9e3e-1ff4a459a292',
   answer: {
     validAnswer: {
       studentName: 'bill',
