@@ -56,4 +56,19 @@ module.exports = {
       teachers: [],
     }
   },
+  comment: {
+    _id:'53a357da32f286324000004f', // id for testing the get routre
+    validComment: { // comment object for testing the post and put routes
+      _id:'53a357da32f286324000004f',
+      createdBy:'5294adf1ba1cd3d8c4013340',
+      label: 'wonder',
+      text: 'i wonder if thats the best strategy',
+      selection: '53a357cd32f286324000004d',
+      submission: '53a35784729e9ef59ba7eb54',
+      workspace: '53a3578632f286324000002e',
+      useForResponse: true,
+      isTrashed: false,
+      createDate: '2014-06-19 17:36:26.766'
+    }
+  }
 };
