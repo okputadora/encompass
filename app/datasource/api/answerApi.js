@@ -36,6 +36,7 @@ const getAnswers = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     const data = {'answers': answers};
     utils.sendResponse(res, data);
@@ -60,6 +61,7 @@ const getAnswer = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     const data = {'answer': answer};
     utils.sendResponse(res, data);
@@ -86,6 +88,7 @@ const postAnswer = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     const data = {'answer': doc};
     utils.sendResponse(res, data);
@@ -128,6 +131,7 @@ const putAnswer = (req, res, next) => {
       if (err) {
         logger.error(err);
         utils.sendError(new errors.InternalError(err.message), res);
+        return;
       }
       const data = {'answer': answer};
       utils.sendResponse(res, data);

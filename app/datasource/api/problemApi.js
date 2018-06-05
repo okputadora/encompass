@@ -36,6 +36,7 @@ const getProblems = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     const data = {'problems': problems};
     utils.sendResponse(res, data);
@@ -61,6 +62,7 @@ const getProblem = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     const data = {'problem': problem};
     utils.sendResponse(res, data);
@@ -87,6 +89,7 @@ const postProblem = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     const data = {'problem': doc};
     utils.sendResponse(res, data);
@@ -112,6 +115,7 @@ const putProblem = (req, res, next) => {
     if(err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     // make the updates, but don't update categories or _id
     for(let field in req.body.problem) {
@@ -183,6 +187,7 @@ const removeCategory = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     // only attempt to remove if the category exists
     if (doc.categories.indexOf(req.body.categoryId) !== -1) {

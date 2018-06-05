@@ -36,6 +36,7 @@ const getSections = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     const data = {'sections': sections};
     utils.sendResponse(res, data);
@@ -59,6 +60,7 @@ const getSection = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     const data = {'section': section};
     utils.sendResponse(res, data);
@@ -85,6 +87,7 @@ const postSection = (req, res, next) => {
     if (err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     const data = {'section': doc};
     utils.sendResponse(res, data);
@@ -109,6 +112,7 @@ const putSection = (req, res, next) => {
     if(err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
+      return;
     }
     // make the updates
     for(let field in req.body.section) {
