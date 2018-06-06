@@ -70,5 +70,13 @@ module.exports = {
       isTrashed: false,
       createDate: '2014-06-19 17:36:26.766'
     }
+  },
+  workspace: {
+    _id: '53a3578632f286324000002e',
+    validWorkspace: {
+      name: 'test workspace',
+      pdSetName: 'Test pd workspace',
+      folderSetName: 'test foldername'
+    }
   }
 };

@@ -134,6 +134,7 @@ function validateContent(options) {
     if(models[schema]) {
       var required = models[schema].schema.requiredPaths();
       console.log("REQUIRED FIELDS: ", required);
+      console.log(data);
       var hasRequiredData = _.every(required, function(x) { return data[x]; });
 
       if(!hasRequiredData) {

@@ -188,7 +188,7 @@ module.exports = function(grunt) {
         options: {
           reporter: 'spec',
         },
-        src: ['test/mocha/commentTest.js']
+        src: ['test/mocha/workspaceTest.js']
       }
     },
 
