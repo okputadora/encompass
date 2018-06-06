@@ -7,7 +7,7 @@ module.exports = {
   // If you are getting 401 errors with these tests you may need to change
   // the userCredentials variable. Go to the network tab of the dev tools in your
   // browser and find the value of Cookie. Paste it in here
-  session: 'loginSessionUser=steve; EncAuth=ff6d8301-dd2f-4a83-9e3e-1ff4a459a292',
+  session: 'loginSessionUser=steve; EncAuth=9ffa48ce-8810-442f-9c39-78ea8f51cb36',
   answer: {
     validAnswer: {
       studentName: 'bill',
@@ -77,6 +77,12 @@ module.exports = {
       name: 'test workspace',
       pdSetName: 'Test pd workspace',
       folderSetName: 'test foldername'
+    }
+  },
+  user: {
+    _id: '529518daba1cd3d8c4013344',
+    validUser: {
+      username: 'testUser',
     }
   }
 };

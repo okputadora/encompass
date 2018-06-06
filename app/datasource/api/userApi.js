@@ -117,9 +117,8 @@ function postUser(req, res, next) {
     utils.sendError(new errors.NotAuthorizedError('You do not have permissions to do this'), res);
     return next(false);
   }
-
   var newUser = new models.User(req.body.user);
-
+  console.log("NEW USER: ", newUser);
   models.User.findOne({username: newUser.username}, function(err, found){
     if (err || !found) {
       newUser.save(function(err, saved) {
@@ -162,7 +161,6 @@ function putUser(req, res, next) {
           logger.error(err);
           utils.sendError(new errors.InternalError(err.message), res);
         }
-
         var data = {'user': doc};
         utils.sendResponse(res, data);
       });
