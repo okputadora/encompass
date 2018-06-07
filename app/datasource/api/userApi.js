@@ -118,7 +118,6 @@ function postUser(req, res, next) {
     return next(false);
   }
   var newUser = new models.User(req.body.user);
-  console.log("NEW USER: ", newUser);
   models.User.findOne({username: newUser.username}, function(err, found){
     if (err || !found) {
       newUser.save(function(err, saved) {
@@ -153,41 +152,37 @@ function putUser(req, res, next) {
 
   var user = auth.requireUser(req);
   if (user.isAdmin) {
-    models.User.findByIdAndUpdate(req.params.id,
-      /* Admins can update all editable fields for any user */
-      req.body.user,
-      function (err, doc) {
-        if (err) {
-          logger.error(err);
-          utils.sendError(new errors.InternalError(err.message), res);
-        }
-        var data = {'user': doc};
-        utils.sendResponse(res, data);
-      });
+    models.User.findByIdAndUpdate(
+      req.params.id,
+      req.body.user
+    ).exec((err, doc) => {
+      if (err) {
+        logger.error(err);
+        utils.sendError(new errors.InternalError(err.message), res);
+      }
+      var data = {'user': doc};
+      utils.sendResponse(res, data);
+    });
   } else {
     /* non-admins can only update themselves */
     if (req.params.id !== user.id) {
       utils.sendError(new errors.NotAuthorizedError('You do not have permissions to do this'), res);
       return;
     }
-
-    models.User.findByIdAndUpdate(req.params.id,
+    models.User.findByIdAndUpdate(
+      req.params.id,
       /* non-admins can only update their names, and seenTour fields */
-      { name: req.body.user.name,
-        seenTour: req.body.user.seenTour
-      },
-      function (err, doc) {
-        if (err) {
-          logger.error(err);
-          utils.sendError(new errors.InternalError(err.message), res);
-        }
-
-        var data = {'user': doc};
-        utils.sendResponse(res, data);
-      });
+      {name: req.body.user.name, seenTour: req.body.user.seenTour}
+    ).exec((err, doc) => {
+      if (err) {
+        logger.error(err);
+        utils.sendError(new errors.InternalError(err.message), res);
+      }
+      var data = {'user': doc};
+      utils.sendResponse(res, data);
+    });
   }
 }
-
 /**
   * @public
   * @method addSection
@@ -201,22 +196,17 @@ const addSection = (req, res, next) => {
   var user = auth.requireUser(req);
   // who can add a section for a user. If they're a teacher they should
   // be able to add a section to themselves. If they're a student
-  models.User.findById(req.params.id, (err, doc) => {
+  models.User.findByIdAndUpdate(
+    req.params.id,
+    {"$push": {"sections": req.body.section}}
+  ).exec((err, doc) => {
     if(err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
       return;
     }
-    doc.update({"$push": {"sections": req.body.section}})
-    .exec((err, update) => {
-      if (err) {
-        logger.error(err);
-        utils.sendError(new errors.InternalError(err.message), res);
-        return;
-      }
-      const data = {'user': doc};
-      utils.sendResponse(res, data);
-    });
+    const data = {'user': doc};
+    utils.sendResponse(res, data);
   });
 };
 
@@ -231,22 +221,51 @@ const addSection = (req, res, next) => {
 */
 const removeSection = (req, res, next) => {
   const user = auth.requireUser(req);
-  models.User.findById(req.params.id, (err, doc) => {
+  models.User.findByIdAndUpdate(
+    req.params.id,
+    {"$pull": {"sections": {"sectionId": req.body.section.sectionId}}}
+  ).exec((err, doc) => {
     if(err) {
       logger.error(err);
       utils.sendError(new errors.InternalError(err.message), res);
       return;
     }
-    doc.update({"$pull": {"sections": {"sectionId": req.body.section.sectionId}}})
-    .exec((err, update) => {
-      if (err) {
-        logger.error(err);
-        utils.sendError(new errors.InternalError(err.message), res);
-        return;
-      }
-      const data = {'user': doc};
-      utils.sendResponse(res, data);
-    });
+    const data = {'user': doc};
+    utils.sendResponse(res, data);
+  });
+};
+
+const addAssignment = (req, res, next) => {
+  const user= auth.requireUser(req);
+  models.User.findByIdAndUpdate(
+    req.params.id,
+    {"$push": {"assignments": req.body.assignment}}
+  ).exec((err, doc) => {
+    if (err) {
+      logger.error(err);
+      utils.sendError(new errors.InternalError(err.message), res);
+      return;
+    }
+    const data = {'user': doc};
+    console.log("DATA: ",data);
+    utils.sendResponse(res, data);
+  });
+};
+
+const removeAssignment = (req, res, next) => {
+  const user = auth.requireUser(req);
+  models.User.findByIdAndUpdate(
+    req.params.id,
+    {"$pull": {"assignments": {"problemId": req.body.assignment.problemId}}}
+  ).exec((err, doc) => {
+    if (err) {
+      logger.error(err);
+      utils.sendError(new errors.InternalError(err.message), res);
+      return;
+    }
+    const data = {'user': doc};
+    console.log("DATA@: ", data);
+    utils.sendResponse(res, data);
   });
 };
 
@@ -256,3 +275,5 @@ module.exports.post.user = postUser;
 module.exports.put.user = putUser;
 module.exports.put.user.addSection = addSection;
 module.exports.put.user.removeSection = removeSection;
+module.exports.put.user.addAssignment = addAssignment;
+module.exports.put.user.removeAssignment = removeAssignment;

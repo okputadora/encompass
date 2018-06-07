@@ -99,7 +99,6 @@ describe('/PUT update user name', () => {
 /** PUT addSection **/
 describe('/PUT add section', () => {
   it('should add a section to the user steve', done => {
-    console.log(fixtures.user.section);
     const url = baseUrl + 'addSection/' + fixtures.user._id;
     chai.request('http://localhost:8080')
     .put(url)
@@ -126,6 +125,40 @@ describe('/PUT remove section', () => {
       expect(res).to.have.status(200);
       expect(res.body.user).to.have.any.keys("sections");
       expect(res.body.user.sections).to.not.include(fixtures.user.section);
+      done();
+    });
+  });
+});
+
+/** PUT addAssignment **/
+describe('/PUT add assignment', () => {
+  it('should add an assignment to the user steve', done => {
+    const url = baseUrl + 'addAssignment/' + fixtures.user._id;
+    chai.request('http://localhost:8080')
+    .put(url)
+    .set('Cookie', userCredentials)
+    .send({assignment: fixtures.user.assignment})
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      expect(res.body.user).to.have.any.keys("assignments");
+      expect(res.body.user.assignments[0].problemId).to.eql(fixtures.user.assignment.problemId);
+      done();
+    });
+  });
+});
+
+/** PUT removeAssignment **/
+describe('/PUT remove assignment', () => {
+  it('should remove the assignment we just added', done => {
+    const url = baseUrl + 'removeAssignment/' + fixtures.user._id;
+    chai.request('http://localhost:8080')
+    .put(url)
+    .set('Cookie', userCredentials)
+    .send({assignment: fixtures.user.assignment})
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      expect(res.body.user).to.have.any.keys("assignments");
+      expect(res.body.user.assignments).to.not.include(fixtures.user.assignment);
       done();
     });
   });

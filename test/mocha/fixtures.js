@@ -87,6 +87,11 @@ module.exports = {
     section: {
       sectionId: '5b0d939eaca0b80f78807d06',
       role: 'Teacher'
+    },
+    assignment: {
+      problemId: '5b0d939baca0b80f78807ce2',
+      title: "Test assignment",
+      categories: ['41224d776a326fb40f000001']
     }
   }
 };

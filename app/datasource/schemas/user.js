@@ -55,7 +55,7 @@ var UserSchema = new Schema({
   authSource: String,
   authUserId: String,
   sections: [{ sectionId: { type: ObjectId, ref: 'Section' }, role: String, _id: false}],
-  assignments: [{ problemId: { type: ObjectId, ref: 'Problem' }, answerId: { type: ObjectId, ref: 'Answer' } }],
+  assignments: [{ problemId: { type: ObjectId, ref: 'Problem' }, answerId: { type: ObjectId, ref: 'Answer' }, _id: false}],
   seenTour: Date,
   lastSeen: Date,
   history: [Log],
