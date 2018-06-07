@@ -83,6 +83,10 @@ module.exports = {
     _id: '529518daba1cd3d8c4013344',
     validUser: {
       username: 'testUser',
+    },
+    section: {
+      sectionId: '5b0d939eaca0b80f78807d06',
+      role: 'Teacher'
     }
   }
 };

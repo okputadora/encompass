@@ -188,7 +188,71 @@ function putUser(req, res, next) {
   }
 }
 
+/**
+  * @public
+  * @method addSection
+  * @description __URL__: /api/users/addSection/:id
+  * @throws {NotAuthorizedError} User has inadequate permissions
+  * @throws {InternalError} Data save failed
+  * @throws {RestError} Something? went wrong
+*/
+
+const addSection = (req, res, next) => {
+  var user = auth.requireUser(req);
+  // who can add a section for a user. If they're a teacher they should
+  // be able to add a section to themselves. If they're a student
+  models.User.findById(req.params.id, (err, doc) => {
+    if(err) {
+      logger.error(err);
+      utils.sendError(new errors.InternalError(err.message), res);
+      return;
+    }
+    doc.update({"$push": {"sections": req.body.section}})
+    .exec((err, update) => {
+      if (err) {
+        logger.error(err);
+        utils.sendError(new errors.InternalError(err.message), res);
+        return;
+      }
+      const data = {'user': doc};
+      utils.sendResponse(res, data);
+    });
+  });
+};
+
+/**
+  * @public
+  * @method removeProblem
+  * @description __URL__: /api/sections/removeProblem:id
+  * @body {problemId: ObjectId}
+  * @throws {NotAuthorizedError} User has inadequate permissions
+  * @throws {InternalError} Data update failed
+  * @throws {RestError} Something? went wrong
+*/
+const removeSection = (req, res, next) => {
+  const user = auth.requireUser(req);
+  models.User.findById(req.params.id, (err, doc) => {
+    if(err) {
+      logger.error(err);
+      utils.sendError(new errors.InternalError(err.message), res);
+      return;
+    }
+    doc.update({"$pull": {"sections": {"sectionId": req.body.section.sectionId}}})
+    .exec((err, update) => {
+      if (err) {
+        logger.error(err);
+        utils.sendError(new errors.InternalError(err.message), res);
+        return;
+      }
+      const data = {'user': doc};
+      utils.sendResponse(res, data);
+    });
+  });
+};
+
 module.exports.get.user = sendUser;
 module.exports.get.users = sendUsers;
 module.exports.post.user = postUser;
 module.exports.put.user = putUser;
+module.exports.put.user.addSection = addSection;
+module.exports.put.user.removeSection = removeSection;

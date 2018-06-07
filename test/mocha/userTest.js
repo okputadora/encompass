@@ -95,3 +95,38 @@ describe('/PUT update user name', () => {
     });
   });
 });
+
+/** PUT addSection **/
+describe('/PUT add section', () => {
+  it('should add a section to the user steve', done => {
+    console.log(fixtures.user.section);
+    const url = baseUrl + 'addSection/' + fixtures.user._id;
+    chai.request('http://localhost:8080')
+    .put(url)
+    .set('Cookie', userCredentials)
+    .send({section: fixtures.user.section})
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      expect(res.body.user).to.have.any.keys("sections");
+      expect(res.body.user.sections[0].sectionId).to.eql(fixtures.user.section.sectionId);
+      done();
+    });
+  });
+});
+
+/** PUT removeSection **/
+describe('/PUT remove section', () => {
+  it('should remove the section we just added', done => {
+    const url = baseUrl + 'removeSection/' + fixtures.user._id;
+    chai.request('http://localhost:8080')
+    .put(url)
+    .set('Cookie', userCredentials)
+    .send({section: fixtures.user.section})
+    .end((err, res) => {
+      expect(res).to.have.status(200);
+      expect(res.body.user).to.have.any.keys("sections");
+      expect(res.body.user.sections).to.not.include(fixtures.user.section);
+      done();
+    });
+  });
+});

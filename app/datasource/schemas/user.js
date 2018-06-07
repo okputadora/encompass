@@ -7,8 +7,8 @@ var mongoose = require('mongoose'),
 /**
   * @public
   * @class Log
-  * @description A single user history log of an event. 
-  *              Used as a subdocument of the user model 
+  * @description A single user history log of an event.
+  *              Used as a subdocument of the user model
 */
 var Log = new Schema({
   creator: { type: String, 'default': "system" },
@@ -33,7 +33,7 @@ Log.virtual('message').get(function () {
 /**
   * @public
   * @class User
-  * @description A user is a local copy of an mfapps user. 
+  * @description A user is a local copy of an mfapps user.
   * @todo We might need to add more attributes to it.
 */
 var UserSchema = new Schema({
@@ -54,7 +54,7 @@ var UserSchema = new Schema({
   forcePwdChg: Boolean,
   authSource: String,
   authUserId: String,
-  sections: [{ sectionId: { type: ObjectId, ref: 'Section' }, role: String }],
+  sections: [{ sectionId: { type: ObjectId, ref: 'Section' }, role: String, _id: false}],
   assignments: [{ problemId: { type: ObjectId, ref: 'Problem' }, answerId: { type: ObjectId, ref: 'Answer' } }],
   seenTour: Date,
   lastSeen: Date,
@@ -62,6 +62,7 @@ var UserSchema = new Schema({
   //sessions: [{key: String, starts: Number, ends: Number}]
 },
   {
+    // _id: false,
     versionKey: false,
     toObject: { virtuals: true },
     toJSON: { virtuals: true },
@@ -98,4 +99,3 @@ UserSchema.virtual('lastImported')
 
 
 module.exports.User = mongoose.model('User', UserSchema);
-
